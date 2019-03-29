@@ -3,6 +3,7 @@ A script to link value between excel files based on Nominal Parameter.
 A VBscript that open an excel file, that will be the Destination of all value, and search for link created on Comment of the Value Cell.
 The link must have this format:
   Flink#D#cartella=X:\yyy#file=Analisis#ParameterName#Elink
+  
   Flink# and #Elink     characterizes the link
   #D#                   stands for destination
   cartella=X:\yyy            the directory where the script search the files that are sources of the values
