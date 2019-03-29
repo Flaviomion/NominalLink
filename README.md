@@ -5,9 +5,13 @@ The link must have this format:
   Flink#D#cartella=X:\yyy#file=Analisis#ParameterName#Elink
   
   Flink# and #Elink     characterizes the link
+  
   #D#                   stands for destination
+  
   cartella=X:\yyy            the directory where the script search the files that are sources of the values
+  
   file=Analisis         Opzional the file name of file that is sources of the values
+  
   ParameterName         the Name of the parameterthat will be copied from source to destination.
   
 Then the script look all links and try to find sources from the file and from directory find on the link.
