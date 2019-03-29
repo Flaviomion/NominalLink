@@ -8,14 +8,16 @@ The link must have this format:
   
   #D#                   stands for destination
   
-  cartella=X:\yyy            the directory where the script search the files that are sources of the values
+  cartella=X:\yyy       the directory (cartella means directory) where the script search the files that are sources
+                        of the values
   
-  file=Analisis         Opzional the file name of file that is sources of the values
+  file=Analisis         Opzional the file name of file that is sources of the values, if is not defined all directory 
+                        was searched fror excel files.
   
   ParameterName         the Name of the parameterthat will be copied from source to destination.
   
 Then the script look all links and try to find sources from the file and from directory find on the link.
-The match is done by check that Destination ParameterName and Source ParameterName are the same reading link on source files with     this format:
+The match is done by check that Destination ParameterName and Source ParameterName are the same from the link found on source files with     this format:
   Flink#S#ParameterName#Elink
   Flink# and #Elink     characterizes the link
   #S#                   stands for sources
