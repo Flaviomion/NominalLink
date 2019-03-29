@@ -18,10 +18,15 @@ The link must have this format:
   
 Then the script look all links and try to find sources from the file and from directory find on the link.
 The match is done by check that Destination ParameterName and Source ParameterName are the same from the link found on source files with     this format:
+
   Flink#S#ParameterName#Elink
+  
   Flink# and #Elink     characterizes the link
+  
   #S#                   stands for sources
+  
   ParameterName         the Name of the parameter that will be copied to destination.
+  
   
 If you have on directory c:\testNominalLink a file named Source*.xlsx and on c:\report a file named report_01-01-2019.xlsx
 to prepare the excel file for te migration of value you need 
