@@ -299,11 +299,11 @@ For Each cmt In sheet.Comments
 		c_n_s = calcolaColonna(c_s_s)
         temp = Mid(cmt.text,PosI+6,1) 'Flink# = 6 caratteri
 		if (Mid(cmt.text,PosI+6,1) = "D") then
-			PosC = InStr(1,cmt.text,"#cartella=",1)
+			PosC = InStr(1,cmt.text,"#dir=",1)
 			PosFi = InStr(1,cmt.text,"#file=",1)
 			cartellaD = GetCartella(f_get, f_link) 'estrae il nome della cartella e il nome del file come f_link
 			if (PosC > 0) then
-				intermedio = Mid(cmt.text,PosC+10,Len(cmt.text))
+				intermedio = Mid(cmt.text,PosC+6,Len(cmt.text))
 				cartellaS = Mid(intermedio,1,Instr(1,intermedio,"#",1)-1) 'estrae dal link il nome della cartella S
 				if (fso.FolderExists(cartellaS)) then
 					if (PosFi > 0) then
