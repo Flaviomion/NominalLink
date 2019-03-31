@@ -1,14 +1,14 @@
 Option Explicit
 Const Versione = "1.1"
 Const Name = "NominalLink"
-const Fdebug = true
+const Fdebug = false
 Dim sheet, objExcel, objWorkbook, objWorksheet, objRange, objShell, out
 Dim CDir, indice, indice_S, y, z, vInput, vOutput, Uscita, vTest, file_output, sheet_n, n_fileIn
 Dim ris, idx, scritto, modificato
 Dim folderDest, fileDest, file_dest, fileINI
 fileINI = "NominalLink.ini"
-'folderOutput = WScript.Arguments.Item(0)
-'fileOutput = WScript.Arguments.Item(1)
+'folderDest = WScript.Arguments.Item(0)
+'fileDest = WScript.Arguments.Item(1)
 Dim lista(12,100)		 ' 0	nome del Parametro
                          ' 1	directory			(D)
                          ' 2	nome file			(D)
