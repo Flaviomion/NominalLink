@@ -2,7 +2,7 @@ Option Explicit
 Const Versione = "1.3"
 Const Name = "NominalLink"
 const Fdebug = true
-Dim sheet, objExcel, objWorkbook, objWorksheet, objRange, objShell, out
+Dim sheet, objExcel, objWorkbook, objWorksheet, objRange, objShell, out, report
 Dim CDir, indice, indice_S, y, z, vInput, vOutput, Uscita, vTest, file_output, sheet_n, n_fileIn
 Dim ris, idx, scritto, modificato
 Dim folderDest, fileDest, file_dest, fileINI
@@ -46,7 +46,7 @@ Const AttesaMessaggioL = 30
 Set objShell = CreateObject("Wscript.Shell")
 Set objExcel = CreateObject("Excel.Application")
 
-leggiINI folderDest, fileDest
+leggiINI folderDest, fileDest, report
 
 dim fso: set fso = CreateObject("Scripting.FileSystemObject")
 CDir = fso.GetAbsolutePathName(".")
@@ -170,8 +170,8 @@ Call objWorkbWrite.Save 'salva il file
   End If
 Uscita = Uscita & "</table></body></html>"
 'WScript.Echo "dir:"&CDIR
-scriviSu CDir & "\rapporto.html", Uscita
-objShell.run(CDir & "\rapporto.html") 'Lancia l'eseguibile definito per il tipo di file da leggere.
+scriviSu report, Uscita
+objShell.run(report) 'Lancia l'eseguibile definito per il tipo di file da leggere.
 objExcel.Quit
 
 ' ------------------------Funzioni ----------------------------------------------------------------------------------------------
@@ -217,11 +217,23 @@ Function loopSheet(ByVal dir, ByVal file)
 	Next 'Loop su tutti gli sheet di un file Input
 end function
 
-Function leggiINI(ByRef folderOutput, ByRef fileOutput)
-Dim objFileToRead
+Function leggiINI(ByRef folderOutput, ByRef fileOutput, ByRef repOutput)
+Dim objFileToRead, linea, x
 	Set objFileToRead = CreateObject("Scripting.FileSystemObject").OpenTextFile(fileINI,1)
-	folderOutput = objFileToRead.ReadLine()
-	fileOutput = objFileToRead.ReadLine()
+	for x = 1 to 3
+		linea = objFileToRead.ReadLine()
+		if (Instr(1,linea,"cartella=",1) > 0)then
+			folderOutput = Mid(linea,10,Len(linea)-9)
+		else
+			if (Instr(1,linea,"file=",1) > 0)then
+				fileOutput = Mid(linea,6,Len(linea)-5)
+			else
+				if (Instr(1,linea,"rapporto=",1) > 0)then
+					repOutput = Mid(linea,10,Len(linea)-9)
+				end if
+			end if
+		end if
+	Next
 	objFileToRead.Close
 	Set objFileToRead = Nothing
 End Function
