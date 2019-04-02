@@ -1,7 +1,7 @@
 Option Explicit
-Const Versione = "1.1"
+Const Versione = "1.3"
 Const Name = "NominalLink"
-const Fdebug = false
+const Fdebug = true
 Dim sheet, objExcel, objWorkbook, objWorksheet, objRange, objShell, out
 Dim CDir, indice, indice_S, y, z, vInput, vOutput, Uscita, vTest, file_output, sheet_n, n_fileIn
 Dim ris, idx, scritto, modificato
@@ -40,7 +40,8 @@ Const OK_BUTTON = 0
 Const CRITICAL_ICON = 16
 Const INFO_ICON = 64
 Const AUTO_DISMISS = 0
-Const AttesaMessaggio = 1
+Const AttesaMessaggio = 5
+Const AttesaMessaggioL = 30
 
 Set objShell = CreateObject("Wscript.Shell")
 Set objExcel = CreateObject("Excel.Application")
@@ -124,36 +125,40 @@ precedente = "primo"
 scrittura = lista(1,0)&"\"&lista(2,0)
 Set  objWorkbWrite = objExcel.Workbooks.Open(scrittura,0,False)
 If (Err.Number <> 0) Then
-   objShell.Popup "Errore Apertura Destinazione Open:" & Err.Number & " Description " & Err.Description, AttesaMessaggio, "errore", CRITICAL_ICON + 4096
+   objShell.Popup "Errore Apertura Destinazione Open:" & Err.Number & " Description " & Err.Description, AttesaMessaggioL, "errore", CRITICAL_ICON + 4096
    WScript.Quit
 End If
 for y = 0 to indice_S-1 step 1
 	i_l = listaS(8,y)
-	lettura = listaS(1,y)&"\"&listaS(2,y)
-	if Not (precedente = lettura) then
-       ' chiudo il vecchio file di lettura
-       if Not (precedente = "primo") then
-           'Set obJWK = ActiveWorkbook
-           Call obJWK.Close(False,precedente)
-       end if
-       'apro un nuovo file di lettura
-       set obJWK = objExcel.Workbooks.Open(lettura, False, True)
-       If (Err.Number <> 0) Then
-	        objShell.Popup "Errore Open:" & Err.Number & " Description " & Err.Description, AttesaMessaggio, "errore", CRITICAL_ICON + 4096
-			WScript.Quit
-       End If
-	end if
-	vInput = ReadExcelFile(obJWK,listaS(4,y),listaS(7,y),listaS(5,y)) 'Workbook,sInput,rInput,cInput,objExcel
-	Uscita = Uscita & "<tr><td><font color='green'>Parametro: "&listaS(0,y) &"</font></td><td><font color='green'>file sorgente:"&lettura& " s:"&  listaS(4,y) & " r:"&  listaS(7,y) & " c:"&  listaS(6,y) & "</font></td><td> Dato: " & vInput & "</td></tr>" 
-	vOutput = WEF(objWorkbWrite,lista(4,i_l),lista(7,i_l),lista(5,i_l),vInput) 'file,sh,rOutput,cOutput,valore
-	vTest = ReadExcelFile(objWorkbWrite,lista(4,i_l),lista(7,i_l),lista(5,i_l))
-	if (vOutput <> vTest) then
-		objShell.Popup "Errore Dato Non Scritto:" & scrittura & " s:"&  lista(4,i_l) & " r:"&  lista(7,i_l) & " c:"& lista(5,i_l) & " Dato: " & vOutput, AttesaMessaggio, "errore di scrittura", CRITICAL_ICON + 4096
-		Uscita = Uscita & "<tr><td colspan='10'><font color='red'>Output IN ERRORE " &scrittura& " s:"&  lista(4,i_l) & " r:"& lista(7,i_l) & " c:"& lista(6,i_l) & "</font></td><td>  Dato: " & vOutput & "</td></tr>"
+	if (i_l <> -1) then
+		lettura = listaS(1,y)&"\"&listaS(2,y)
+		if Not (precedente = lettura) then
+		   ' chiudo il vecchio file di lettura
+		   if Not (precedente = "primo") then
+			   'Set obJWK = ActiveWorkbook
+			   Call obJWK.Close(False,precedente)
+		   end if
+		   'apro un nuovo file di lettura
+		   set obJWK = objExcel.Workbooks.Open(lettura, False, True)
+		   If (Err.Number <> 0) Then
+				objShell.Popup "Errore Open:" & Err.Number & " Description " & Err.Description, AttesaMessaggioL, "errore", CRITICAL_ICON + 4096
+				WScript.Quit
+		   End If
+		end if
+		vInput = ReadExcelFile(obJWK,listaS(4,y),listaS(7,y),listaS(5,y)) 'Workbook,sInput,rInput,cInput,objExcel
+		Uscita = Uscita & "<tr><td><font color='green'>Parametro: "&listaS(0,y) &"</font></td><td><font color='green'>file sorgente:"&lettura& " s:"&  listaS(4,y) & " r:"&  listaS(7,y) & " c:"&  listaS(6,y) & "</font></td><td> Dato: " & vInput & "</td></tr>" 
+		vOutput = WEF(objWorkbWrite,lista(4,i_l),lista(7,i_l),lista(5,i_l),vInput) 'file,sh,rOutput,cOutput,valore
+		vTest = ReadExcelFile(objWorkbWrite,lista(4,i_l),lista(7,i_l),lista(5,i_l))
+		if (vOutput <> vTest) then
+			objShell.Popup "Errore Dato Non Scritto:" & scrittura & " s:"&  lista(4,i_l) & " r:"&  lista(7,i_l) & " c:"& lista(5,i_l) & " Dato: " & vOutput, AttesaMessaggio, "errore di scrittura", CRITICAL_ICON + 4096
+			Uscita = Uscita & "<tr><td colspan='10'><font color='red'>Output IN ERRORE " &scrittura& " s:"&  lista(4,i_l) & " r:"& lista(7,i_l) & " c:"& lista(6,i_l) & "</font></td><td>  Dato: " & vOutput & "</td></tr>"
+		else
+			Uscita = Uscita & "<tr><td></td><td><font color='brown'>file destinazione:"&scrittura& " s:"&  lista(4,i_l) & " r:"&  lista(7,i_l) & " c:"& lista(6,i_l) & "</font></td><td>  Dato: " & vOutput & "</td></tr>"
+		end if   
+		precedente = lettura
 	else
-		Uscita = Uscita & "<tr><td></td><td><font color='brown'>file destinazione:"&scrittura& " s:"&  lista(4,i_l) & " r:"&  lista(7,i_l) & " c:"& lista(6,i_l) & "</font></td><td>  Dato: " & vOutput & "</td></tr>"
-	end if   
-    precedente = lettura
+		objShell.Popup "Parametro Riscontrato solo nei Sorgenti:" & listaS(0,y), AttesaMessaggio,"Attenzione", CRITICAL_ICON + 4096
+	end if
 Next
 Call objWorkbWrite.Save 'salva il file
   If (Err.Number <> 0) Then
@@ -164,6 +169,7 @@ Call objWorkbWrite.Save 'salva il file
     objShell.Popup "Errore close Destinazione:" & Err.Number & " Description " & Err.Description, AttesaMessaggio, "errore", CRITICAL_ICON + 4096
   End If
 Uscita = Uscita & "</table></body></html>"
+'WScript.Echo "dir:"&CDIR
 scriviSu CDir & "\rapporto.html", Uscita
 objShell.run(CDir & "\rapporto.html") 'Lancia l'eseguibile definito per il tipo di file da leggere.
 objExcel.Quit
@@ -261,6 +267,7 @@ Function calcolaColonna(ByVal nome_colonna)
 	Else
 		if (nome_colonna = "") then
 			Wscript.Echo "Errore Nome colonna vuoto"
+			objShell.Popup "Errore Apertura Nome colonna vuoto", AttesaMessaggioL, "errore", CRITICAL_ICON + 4096
 			WScript.Quit
 		end if
 		tot = CInt(Asc(UCase(nome_colonna))-64)
@@ -316,6 +323,7 @@ For Each cmt In sheet.Comments
 						if (f_c_s <> "NULLA") then
 							lis(9,index) =  f_c_s ' file S
 							lis(10,index) = f_s 'chiave_file S
+							'WScript.Echo "con file Nome Parametro:"&nomePar
 						else
 							lis(9,index) =  "" ' file S
 							lis(10,index) = "" 'chiave_file S
@@ -328,6 +336,7 @@ For Each cmt In sheet.Comments
                         PosPar = Instr(1,intermedio,"#",1)
 					    PosF = Instr(1,intermedio,"#Elink",1)
 					    nomePar = Mid(intermedio,PosPar+1,PosF-PosPar-1) 'estrae dal link il nome dell file
+						'WScript.Echo "Senza file Nome Parametro:"&nomePar
 					end if
 					lis(0,index) = nomePar
 					lis(1,index) = cartellaD
@@ -461,7 +470,11 @@ Function GetPuntatore(ByVal nome, ByRef file, ByRef sh, ByRef col, ByRef rig)
 End Function
 
 Function GetCartella(ByVal nome, ByRef file)
-	Dim ss, xx, ff, n_parts, i
+	Dim ss, xx, ff, n_parts, i, pre
+	pre = ""
+	if Not (InStr(nome,":") > 0) Then
+		pre = "\\"
+	end if
 	ss = Split(nome, "\")
 	n_parts = UBound(ss)
 	For i = 0 to n_parts -1 Step 1
@@ -471,6 +484,7 @@ Function GetCartella(ByVal nome, ByRef file)
 			ff = ff & "\" & ss(i)
 		end if
 	Next
+    ff = pre & ff
 	file = ss(n_parts)
 	GetCartella = ff
 End Function
@@ -557,6 +571,7 @@ End Function
 
 Function scriviSu(ByVal nome, ByVal dato)
 Dim objFileToWrite
+	'WScript.Echo "File di scrittura:"&nome
 	Set objFileToWrite = CreateObject("Scripting.FileSystemObject").OpenTextFile(nome,2,true)
 	objFileToWrite.WriteLine(dato)
 	objFileToWrite.Close
