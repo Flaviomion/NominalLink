@@ -462,11 +462,10 @@ End Function
 
 Function GetCartella(ByVal nome, ByRef file)
 	Dim ss, xx, ff, n_parts, i, pre
-    pre = ""
-    if (InStr(nome,"\\\\") = 0) Then
-        WScript.Echo "path di rete"
-        pre = "\\"
-    end if
+	pre = ""
+	if Not (InStr(nome,":") > 0) Then
+		pre = "\\"
+	end if
 	ss = Split(nome, "\")
 	n_parts = UBound(ss)
 	For i = 0 to n_parts -1 Step 1
