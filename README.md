@@ -48,6 +48,11 @@ to prepare the excel file for te migration of value you need
  that is take the value on source cell (c:\testNominalLink\Source_01-01-2019.xlsx) and put it on destination cell (c:\report\report_01-01-2019.xlsx)
  
  Version 1.3 adds the ability to use network Path
+ The NominalLink.ini now is:
+ 
+ cartella=c:\report
+ file=report
+ rapporto=c:\report\report.html
  
  Good linking.
  
