@@ -47,6 +47,8 @@ to prepare the excel file for te migration of value you need
  and start the NominalLink.vbs, ath the end of the script a report.html is displayed with the information of what was done
  that is take the value on source cell (c:\testNominalLink\Source_01-01-2019.xlsx) and put it on destination cell (c:\report\report_01-01-2019.xlsx)
  
+ Version 1.2 adds the ability to use network Path
+ 
  Good linking.
  
   
