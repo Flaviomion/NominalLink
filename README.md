@@ -54,6 +54,8 @@ to prepare the excel file for te migration of value you need
  file=report
  rapporto=c:\report\report.html
  
+ At last I tinks that is good to have an executable of NominalLink so I add NominalLink.vb that is the Visual Basic version of the program.
+ 
  Good linking.
  
   
